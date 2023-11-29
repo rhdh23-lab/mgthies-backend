@@ -1,0 +1,66 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: mgthies-poi-backend-app-dev
+  annotations:
+    argocd/app-name: mgthies-poi-backend-app-dev
+    backstage.io/kubernetes-id: mgthies-poi-backend-app
+    backstage.io/kubernetes-namespace: mgthies
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rhdh23-lab/mgthies-backend
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.rosa-m9x67.dusy.p1.openshiftapps.com/dev-pipelines/ns/mgthies/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.rosa-m9x67.dusy.p1.openshiftapps.com/k8s/ns/mgthies/deployments/mgthies-poi-backend-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.rosa-m9x67.dusy.p1.openshiftapps.com/#https://github.com/rhdh23-lab/mgthies-backend?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/mgthies"
+  system: workshop-system-mgthies
+  providesApis:
+    - backend-api-mgthies
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-mgthies
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/mgthies"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: backend-api-mgthies
+  description: API surface used by workshop attendees to initialize and load parks data
+  links:
+    - url: http://mgthies-poi-backend-app-mgthies.apps.rosa-m9x67.dusy.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rhdh23-lab/mgthies-backend/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/mgthies"
+  system: workshop-system-mgthies
+  definition:
+    $text: https://github.com/rhdh23-lab/mgthies-backend/tree/main/src/main/resources/META-INF/openapi.yaml
